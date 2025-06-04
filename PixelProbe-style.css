@@ -1,0 +1,180 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(120deg, #1c003b, #3e006f);
+  color: #fff;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #e6f7ff;
+}
+
+header p {
+  font-size: 1rem;
+  color: #d0d0ff;
+  margin: 8px 0;
+}
+
+header small {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.upload-section {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.upload-box {
+  width: 320px;
+  padding: 30px;
+  text-align: center;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  position: relative;
+}
+
+.gradient-box {
+  background: linear-gradient(145deg, #251159, #3a0a81);
+}
+
+.pink {
+  background: linear-gradient(145deg, #500a68, #a3186e);
+}
+
+.upload-box img {
+  width: 50px;
+  margin-bottom: 15px;
+}
+
+.upload-box h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.upload-box p {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.upload-box button {
+  background: #007aff;
+  border: none;
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.3s ease;
+}
+
+.upload-box button:hover {
+  background: #005bd3;
+}
+
+.upload-box span {
+  display: block;
+  font-size: 0.75rem;
+  color: #ccc;
+}
+
+.analysis-section {
+  background: rgba(255, 255, 255, 0.05);
+  margin: 60px auto;
+  padding: 50px;
+  border-radius: 20px;
+  width: 80%;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.analysis-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #e6f7ff;
+}
+
+.analysis-section p {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 30px;
+}
+
+.highlights {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.highlight {
+  background: #00ffc3;
+  color: #000;
+  border-radius: 30px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+}
+
+.icon-banner {
+  margin-bottom: 30px;
+}
+
+.icon-banner img {
+  width: 30px;
+  vertical-align: middle;
+}
+
+.icon-banner span {
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: 1rem;
+}
+
+.icon-banner small {
+  display: block;
+  font-size: 0.75rem;
+  color: #bbb;
+}
+
+.start-analysis-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 20px;
+}
+
+.start-analysis-btn {
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #00c6ff, #bc00ff);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+}
+
+.start-analysis-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(188, 0, 255, 0.7);
+}
+
