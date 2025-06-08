@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -18,16 +18,18 @@
       <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="Design A" />
       <h2>Upload Design A</h2>
       <p>Original Reference Design</p>
-      <button>Choose Design File</button>
-      <span>Supports PNG, JPG, GIF up to 10MB</span>
+       <label for="upload-a" class="upload-label">Choose Design File</label>
+       <input type="file" id="upload-a" class="file-input" accept=".png,.jpg,.jpeg,.gif" />
+       <span class="file-name" id="file-name-a">Supports PNG, JPG, GIF up to 10MB</span>
     </div>
 
     <div class="upload-box gradient-box pink">
       <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="Design B" />
       <h2>Upload Design B</h2>
       <p>Updated Test Design</p>
-      <button>Choose Design File</button>
-      <span>Supports PNG, JPG, GIF up to 10MB</span>
+      <label for="upload-b" class="upload-label">Choose Design File</label>
+      <input type="file" id="upload-b" class="file-input" accept=".png,.jpg,.jpeg,.gif" />
+      <span class="file-name" id="file-name-b">Supports PNG, JPG, GIF up to 10MB</span>
     </div>
   </section>
   <!-- Place this after the upload-section and before analysis-section -->
@@ -49,5 +51,123 @@
       <span class="highlight">Zero-Tolerance Testing</span>
     </div>
   </section>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+  const MAX_FILE_SIZE_MB = 10;
+
+  function handleFileUpload(inputId, displayId) {
+    const input = document.getElementById(inputId);
+    const display = document.getElementById(displayId);
+
+    input.addEventListener('change', () => {
+      const file = input.files[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+          alert("File size exceeds 10MB. Please choose a smaller file.");
+          input.value = ""; // Clear the input
+          display.textContent = "Supports PNG, JPG, GIF up to 10MB";
+        } else {
+          display.innerHTML = `Selected: <strong>${file.name}</strong>`;
+        }
+      }
+    });
+  }
+
+  handleFileUpload('upload-a', 'file-name-a');
+  handleFileUpload('upload-b', 'file-name-b');
+
+  const analysisBtn = document.querySelector(".start-analysis-btn");
+
+  analysisBtn.addEventListener("click", async () => {
+    const fileA = document.getElementById("upload-a").files[0];
+    const fileB = document.getElementById("upload-b").files[0];
+
+    if (!fileA || !fileB) {
+      alert("Please upload both Design A and Design B before starting analysis.");
+      return;
+    }
+
+    analysisBtn.textContent = "Analyzing...";
+    analysisBtn.disabled = true;
+
+    const formData = new FormData();
+    formData.append("designA", fileA);
+    formData.append("designB", fileB);
+
+    try {
+      const response = await fetch("http://localhost:5000/analyze", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+      displayReport(result);
+    } catch (error) {
+      console.error("Analysis failed:", error);
+      alert("Failed to analyze images. Make sure the backend is running.");
+    } finally {
+      analysisBtn.textContent = "⚡ Start AI Analysis ⚡";
+      analysisBtn.disabled = false;
+    }
+  });
+
+  function displayReport(report) {
+  const container = document.createElement("section");
+  container.className = "defect-report-section";
+
+  // Step 1: Set the main HTML content
+  container.innerHTML = 
+    `<h2>🧠 AI Defect Report</h2>
+    <ul>
+      <li><strong>Functionality Testing:</strong> ${report["Functionality Testing"]}</li>
+      <li><strong>Visual Consistency:</strong> ${report["Visual Consistency"]}</li>
+      <li><strong>Usability Insights:</strong> ${report["Usability Insights"]}</li>
+      <li><strong>Accessibility Checks:</strong> ${report["Accessibility Checks"]}</li>
+      <li><strong>Cross-Browser & Device Testing:</strong> ${report["Cross-Browser & Device Testing"]}</li>
+      <li><strong>Visual Consistency Score:</strong> ${report["visual_consistency_score"]}</li>
+      <li><strong>Visual Similarity Score:</strong> ${report["visual_similarity_score"] !== undefined ? report["visual_similarity_score"] + "%" : "undefined"}</li>
+      ${report["AI Explanation"] ? `<li><strong>AI Explanation:</strong><ul>${report["AI Explanation"].map(item => `<li>${item}</li>`).join('')}</ul></li>` : ""}
+    </ul>`;
+
+  // ✅ Step 2: Add Export Buttons
+  const exportBtns = document.createElement("div");
+  exportBtns.innerHTML = 
+    `<button onclick="downloadJSON()">📄 Export JSON</button>
+    <button onclick="downloadPDF()">🧾 Export PDF</button>`;
+  container.appendChild(exportBtns);
+
+  // Append to body
+  document.body.appendChild(container);
+  container.scrollIntoView({ behavior: "smooth" });
+}
+function downloadJSON() {
+  const reportSection = document.querySelector(".defect-report-section ul");
+  const items = reportSection.querySelectorAll("li");
+  const json = {};
+
+  items.forEach((li) => {
+    const key = li.querySelector("strong")?.textContent?.replace(":", "");
+    const value = li.innerText.replace(key + ": ", "");
+    if (key && key !== "AI Explanation") {
+      json[key] = value;
+    } else if (key === "AI Explanation") {
+      const subItems = li.querySelectorAll("ul li");
+      json[key] = Array.from(subItems).map(li => li.textContent);
+    }
+  });
+
+  const blob = new Blob([JSON.stringify(json, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "ai-defect-report.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadPDF() {
+  alert("🧾 PDF export is not yet implemented. Want me to enable jsPDF for this?");
+}
+</script>
 </body>
-</html>
+</html>   
