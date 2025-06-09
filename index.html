@@ -95,7 +95,7 @@
     formData.append("designB", fileB);
 
     try {
-      const response = await fetch("http://localhost:5000/analyze", {
+      const response = await fetch("https://my-cognitrentai-tool-1.onrender.com/analyze", {
         method: "POST",
         body: formData,
       });
